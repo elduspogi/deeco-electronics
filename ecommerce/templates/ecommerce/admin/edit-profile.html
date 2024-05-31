@@ -1,0 +1,40 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Update Profile - Deeco Electronics.{% endblock %}
+
+{% block content %}
+{% include 'messages.html' %}
+<div class="container">
+    <h1 class="mt-4">Update Profile</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can update your profile as an administrator here.</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            <div class="container">
+                <form action="{% url 'admin_edit_profile' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="">Complete Name *</label>
+                                <input type="text" class="form-control" placeholder="Complete Name" name="name"
+                                    value="{{ request.user.name }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Email Address *</label>
+                                <input type="email" class="form-control" placeholder="Email Address" name="email"
+                                    value="{{ request.user.email }}">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">EDIT PROFILE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

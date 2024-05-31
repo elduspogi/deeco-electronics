@@ -1,0 +1,52 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Activity Logs - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Activity Logs</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view the activity of admins here.</li>
+    </ol>
+</div>
+
+
+<div class="container mb-5">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if logs %}
+            <div class="table-responsive">
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th scope="col">Log ID</th>
+                            <th scope="col">Admin</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <th>{{ log.id }}</th>
+                            <td>{{ log.user.name }}</td>
+                            <td>{{ log.activity }}</td>
+                            <td>{{ log.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="p-5 text-center">No activity yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock %}

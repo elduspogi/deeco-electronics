@@ -1,0 +1,167 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Add Bundle - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <h1 class="mt-4">Add Bundle</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can create bundles here.</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            <div class="container">
+                {% if form.errors %}
+                <ul>
+                    {% for error in form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <li> This field is required: {{ error }}</li>
+                    </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form action="{% url 'add_bundle' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="">Name *</label>
+                        <input type="text" class="form-control" placeholder="e.g. Screwdriver Bundle" name="name"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            placeholder="e.g. A mix of Flathead and Phillips screwdrivers." required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Raw Price *</label>
+                                <input type="number" class="form-control" placeholder="e.g. 100.00" id="rawPrice"
+                                    min="1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Total/Discounted Price</label>
+                                <input type="text" class="form-control" placeholder="" name="price"
+                                    id="discountedPrice">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Stock *</label>
+                                <input type="text" class="form-control" placeholder="e.g. 5" name="stock" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="category-select">Select a Category *</label>
+                            <select id="category-select" class="form-select mb-3" aria-label="Select a Category"
+                                name="category" required>
+                                <option selected disabled>Select a Category</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Image 1 *</label>
+                                <input type="file" class="form-control" name="image1" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 2</label>
+                                <input type="file" class="form-control" name="image2">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 3</label>
+                                <input type="file" class="form-control" name="image3">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Image 4</label>
+                                <input type="file" class="form-control" name="image4">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 5</label>
+                                <input type="file" class="form-control" name="image5">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 6</label>
+                                <input type="file" class="form-control" name="image6">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">CREATE BUNDLE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Remove disabled attr in the discounted Price if the form is submitted
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function () {
+            // document.getElementById('discountedPrice').disabled = false;
+            document.getElementById('discountedPrice').removeAttribute('disabled');
+        });
+
+        // Apply 20% discount if raw price is equal or greater than 1000
+        var rawPriceInput = document.getElementById('rawPrice');
+        var discountedPriceInput = document.getElementById('discountedPrice');
+
+        rawPriceInput.addEventListener('input', function () {
+            var rawPrice = parseInt(rawPriceInput.value);
+
+            if (!isNaN(rawPrice)) {
+                var discountedPrice = rawPrice;
+                if (rawPrice >= 1000) {
+                    var discountedPrice = rawPrice * 0.90;
+                }
+                // discountedPriceInput.value = discountedPrice.toFixed(2);
+                discountedPriceInput.value = discountedPrice.toFixed(0);
+            } else {
+                discountedPriceInput.value = '';
+            }
+        });
+
+        // Display Product Quantity when Product Item is selected
+        // function toggleQuantityInput(selectElement, quantityGroupId) {
+        //     selectElement.addEventListener('change', function () {
+        //         var quantityGroup = document.getElementById(quantityGroupId);
+        //         if (selectElement.value) {
+        //             quantityGroup.style.display = 'block';
+        //         } else {
+        //             quantityGroup.style.display = 'none';
+        //         }
+        //     });
+        // }
+
+        // var product1Select = document.getElementById('product1-select');
+        // var product2Select = document.getElementById('product2-select');
+        // var product3Select = document.getElementById('product3-select');
+        // var product4Select = document.getElementById('product4-select');
+        // var product5Select = document.getElementById('product5-select');
+        // var product6Select = document.getElementById('product6-select');
+
+        // toggleQuantityInput(product1Select, 'product1-quantity-group');
+        // toggleQuantityInput(product2Select, 'product2-quantity-group');
+        // toggleQuantityInput(product3Select, 'product3-quantity-group');
+        // toggleQuantityInput(product4Select, 'product4-quantity-group');
+        // toggleQuantityInput(product5Select, 'product5-quantity-group');
+        // toggleQuantityInput(product6Select, 'product6-quantity-group');
+    });
+</script>
+{% endblock %}

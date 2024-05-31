@@ -1,0 +1,263 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Dashboard - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Dashboard</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Welcome,
+        {% if request.user.user_type == 'Superadmin' %}
+        Superadmin
+        {% else %}
+        Admin
+        {% endif %}
+        {{ request.user.name }}.</li>
+</ol>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Registered Users
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0" data-purecounter-end="{{ users }}"
+                    data-purecounter-duration="1">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'user_list' %}">View
+                    Users</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Products Posted
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ total_products }}" data-purecounter-duration="1">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'product_list' %}">View
+                    Products</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Bundles Posted
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ total_bundles }}" data-purecounter-duration="1">0</h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'bundle_list' %}">View
+                    Bundles</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Pending Orders
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ pending_orders }}" data-purecounter-duration="1">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'pending_orders' %}">View
+                    Pending
+                    Orders</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">To Pack Orders
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ to_pack_orders }}" data-purecounter-duration="1">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'user_list' %}">View To
+                    Pickup</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Ready For Pick Up Orders
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ ready_for_pickup_orders }}" data-purecounter-duration="1">0</h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none"
+                    href="{% url 'ready_for_pickup_orders' %}">View
+                    Ready For Pickup Orders</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Picked Up Orders
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ picked_up_orders }}" data-purecounter-duration="0.3">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'completed_orders' %}">View
+                    Picked Up Orders</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-6">
+        <div class="card text-dark mb-4 card-dashboard">
+            <div class="card-body">Cancelled Orders
+                <h1 class="text-end px-5 purecounter" data-purecounter-start="0"
+                    data-purecounter-end="{{ cancelled_orders }}" data-purecounter-duration="0.3">0
+                </h1>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link text-decoration-none" href="{% url 'cancelled_orders' %}">View
+                    Cancelled Orders</a>
+                <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-light">
+                Top Sellers
+            </div>
+            <div class="card-body">
+                <div>
+                    <canvas id="pieChart" width="200" height="200px"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-light">
+                Products Sold by Category (Current Month)
+            </div>
+            <div class="card-body">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-light">
+                Newly Registered Users for this Month
+            </div>
+            <div class="card-body">
+                {% if newly_registered_users %}
+                <div class="table-responsive">
+                    <table class="table table-striped rounded">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in newly_registered_users %}
+                            <tr>
+                                <td class="field-150">
+                                    <div class="field-data upload-request-text">
+                                        {{ user.id }}
+                                    </div>
+                                </td>
+                                </td>
+                                <td>
+                                    <div class="upload-request-text">{{ user.name }}</div>
+                                </td>
+                                <td class="field-200">
+                                    <div class="field-data upload-request-text">
+                                        {{ user.email }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No registered users for this month.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('pieChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Products', 'Bundles'],
+                datasets: [{
+                    label: '# of Products and Bundles',
+                    data: {{ pie_chart_data }},
+            backgroundColor: [
+                'rgba(0, 0, 255, 0.3)',
+                'rgba(54, 162, 235, 0.6)'
+            ],
+            borderColor: [
+                'rgba(0, 0, 255, 0.58)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+        },
+        options: {
+        // Add your options here if needed
+    }
+    });
+});
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ category_labels| safe }},
+        datasets: [{
+            label: 'Number of Products Sold',
+            data: {{ products_sold_data| safe }},
+        backgroundColor: 'rgba(0, 0, 255, 0.25)',
+        borderColor: 'rgba(0, 0, 255, 0.6)',
+        borderWidth: 1
+                }]
+            },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+        });
+    });
+</script>
+
+<script>
+    // Initialize Purecounter JS
+    new PureCounter();
+</script>
+{% endblock content %}

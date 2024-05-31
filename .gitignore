@@ -1,0 +1,4 @@
+venv
+.env
+credential.json
+media

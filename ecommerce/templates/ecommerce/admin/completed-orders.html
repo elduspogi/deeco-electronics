@@ -1,0 +1,56 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Picked Up Orders - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Picked Up Orders</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view "Picked Up" orders here.</li>
+    </ol>
+</div>
+
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if completed_orders %}
+            <table id="myTable" class="display">
+                <thead>
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Contact No.</th>
+                        <th scope="col">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in completed_orders %}
+                    <tr>
+                        <th scope="row">{{ order.id }}</th>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.email }}</td>
+                        <td>{{ order.contact_no }}</td>
+                        <td>
+                            <a href="{% url 'edit_order' order_id=order.id %}" class="text-white">
+                                <i class="fa-solid fa-eye text-dark"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center p-4">No completed orders as of the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock content %}

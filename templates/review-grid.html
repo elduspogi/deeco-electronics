@@ -1,0 +1,153 @@
+{% if reviews %}
+<div class="swiper p-5" data-aos="zoom-in" data-aos-delay="400">
+    <div class="swiper-wrapper">
+        {% for review in reviews %}
+        <div class="swiper-slide">
+            <div class="card testimonials mb-5 h-100">
+                <div class="card-body p-5">
+                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-5">
+                        {% if review.rating == '1' %}
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        {% elif review.rating == '2' %}
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        {% elif review.rating == '3' %}
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        {% elif review.rating == '4' %}
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        {% elif review.rating == '5' %}
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        <li><i class="bi bi-star-fill index"></i></li>
+                        {% endif %}
+                    </ul>
+                    <div class="text-center">
+                        <h3 class="mb-5">{{ review.user.name }}</h3>
+                        <p>
+                            {% if review.comments %}
+                            <i class="bi bi-quote" style="font-size: 30px;"></i>
+                            {{ review.comments }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="swiper-pagination js-testimonials-pagination"></div>
+</div>
+{% else %}
+<div class="swiper p-5" data-aos="zoom-in" data-aos-delay="400">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="card testimonials mb-5 h-100">
+                <div class="card-body p-5">
+                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-5">
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="mb-5"></p>
+                        <h3></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="card testimonials mb-5 h-100">
+                <div class="card-body p-5">
+                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-5">
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="mb-5"></p>
+                        <h3></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="card testimonials mb-5 h-100">
+                <div class="card-body p-5">
+                    <ul class="list-unstyled d-flex justify-content-center text-warning mb-5">
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                        <li><i class="bi bi-star index"></i></li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="mb-5"></p>
+                        <h3></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination js-testimonials-pagination"></div>
+</div>
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const originalSlide = document.querySelector('.swiper-slide');
+        const swiperContainer = document.querySelector('.swiper-wrapper');
+        let slidesLength = 0;
+
+        if (originalSlide) {
+            slidesLength = 0;
+            for (let i = 0; i < slidesLength; i++) {
+                const clonedSlide = originalSlide.cloneNode(true);
+                swiperContainer.appendChild(clonedSlide);
+            }
+        }
+
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            grabCursor: true,
+            spaceBetween: 70,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            speed: 2000,
+            breakpoints: {
+                767: {
+                    slidesPerView: 2
+                },
+                1200: {
+                    slidesPerView: 3
+                }
+            },
+        });
+    });
+</script>

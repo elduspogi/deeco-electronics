@@ -1,0 +1,62 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Category List - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <h1 class="mt-4">Category List</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view product categories here.</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if categories %}
+            <div class="table-responsive">
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th class="col">Edit</th>
+                            <th class="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <th>{{ category.id }}</th>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <a href="{% url 'edit_category' category_id=category.id %}" class="text-dark">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" class="text-dark">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="p-4 text-center">No banned users.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock content %}

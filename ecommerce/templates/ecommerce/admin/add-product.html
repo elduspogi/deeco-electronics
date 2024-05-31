@@ -1,0 +1,83 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Add Product - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <h1 class="mt-4">Add Product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can add products here.</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            <div class="container">
+                <form action="{% url 'add_product' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="">Name *</label>
+                        <input type="text" class="form-control" placeholder="e.g. 5 ft. Wood Planks" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            placeholder="e.g. Very sturdy wood planks. Good for construction."></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Price *</label>
+                        <input type="number" class="form-control" placeholder="e.g. 100.00" name="price">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Stock *</label>
+                        <input type="text" class="form-control" placeholder="e.g. 5" name="stock">
+                    </div>
+                    <label for="category-select">Select a Category *</label>
+                    <select id="category-select" class="form-select mb-3" aria-label="Select a Category"
+                        name="category">
+                        <option selected disabled>Select a Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Image 1 *</label>
+                                <input type="file" class="form-control" name="image1" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 2</label>
+                                <input type="file" class="form-control" name="image2">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 3</label>
+                                <input type="file" class="form-control" name="image3">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Image 4</label>
+                                <input type="file" class="form-control" name="image4">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 5</label>
+                                <input type="file" class="form-control" name="image5">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Image 6</label>
+                                <input type="file" class="form-control" name="image6">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">ADD PRODUCT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

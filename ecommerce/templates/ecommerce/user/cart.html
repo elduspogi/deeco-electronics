@@ -1,0 +1,308 @@
+{% extends 'layout.html' %}
+
+{% block title %}Your Cart - Deeco Electronics.{% endblock title %}
+
+{% block content %}
+<!--------- Checkout Hero ---------->
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center" data-aos="fade-up">
+            <h1 class="text-center">Checkout Items Now!</h1>
+        </div>
+    </div>
+</section>
+<!--------- End Checkout Hero ---------->
+
+<!--------- Cart Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container mt-3">
+        {% if request.user.is_authenticated %}
+        <div class="container d-flex flex-column justify-content-end align-items-end mt-3">
+            <h4 class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Since you are a registered user, every successful pickup orders will guarantee you points based on the amount of the order."></i>
+                Current Points:
+                {% if request.user.points %}
+                {{ request.user.points }}
+                {% else %}
+                0
+                {% endif %}
+            </h4>
+        </div>
+        {% endif %}
+        <div class="d-flex flex-column justify-content-center align-items-center mb-3" data-aos="fade-up"
+            data-aos-delay="100">
+            <h4 class="text-center">Your Added To Cart Items Are Here</h4>
+            <h6 class="text-center">Please select the items you want to checkout.</h6>
+
+            <!--------- Push Messages ---------->
+            {% include 'messages.html' %}
+            <!--------- End Push Messages ---------->
+
+        </div>
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <a href="{% url 'shop' %}" class="btn btn-primary mb-3 back-button">
+                <i class="bi bi-arrow-left"></i>
+                Go To Shop
+            </a>
+        </div>
+        <div class="card mb-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-body">
+                {% if products %}
+                <ul class="list-group list-group-flush">
+                    {% for product in products %}
+                    <li class="list-group-item">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    {% if request.user.is_authenticated %}
+                                    <input type="checkbox" class="product-checkbox form-check-input"
+                                        data-product-id="{{ product.id }}">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-2">
+                                    <div id="carouselExample{{ forloop.counter }}" class="carousel slide">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img src="{{ product.image1.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% if product.image2 %}
+                                            <div class="carousel-item">
+                                                <img src="{{ product.image2.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% endif %}
+                                            {% if product.image3 %}
+                                            <div class="carousel-item">
+                                                <img src="{{ product.image3.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% endif %}
+                                            {% if product.image4 %}
+                                            <div class="carousel-item">
+                                                <img src="{{ product.image4.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% endif %}
+                                            {% if product.image5 %}
+                                            <div class="carousel-item">
+                                                <img src="{{ product.image5.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% endif %}
+                                            {% if product.image6 %}
+                                            <div class="carousel-item">
+                                                <img src="{{ product.image6.url }}" class="d-block w-100 rounded"
+                                                    alt="...">
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% if product.image2 %}
+                                        <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExample{{ forloop.counter }}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExample{{ forloop.counter }}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <input type="hidden" value="{{ product.id }}" class="product-id-hidden">
+                                    <h4>{{ product.name }}</h4>
+                                    <p>{{ product.description }}</p>
+                                    <p class="product-price" data-price="{{ product.price }}">&#8369;{{ product.price }}
+                                    </p>
+                                    <p>Stock: {{ product.stock }}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    {% for key, value in quantities.items %}
+                                    {% if key == product.id %}
+                                    <input type="number" class="form-control update-cart mb-3" value="{{ value }}"
+                                        data-product-id="{{ product.id }}" data-checkout-id="{{ product.id }}"
+                                        id="qty-cart" min="1" max="{{ product.stock }}">
+                                    <button class="btn btn-danger w-100 delete-product"
+                                        data-product-id="{{ product.id }}">Remove</button>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="d-flex flex-column align-items-center p-5">
+                    <p class="text-center">No items on the cart.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if products %}
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-6 col-md-12"></div>
+            <div class="col-lg-6 col-md-12 ml-auto">
+                <div class="card mb-5">
+                    <div class="card-body">
+                        {% if request.user.is_authenticated %}
+                        <h3>Total: &#8369;<span id="total-price">0</span></h3>
+                        <a href="{% url 'checkout' %}" class="btn btn-primary w-100">Checkout
+                            Now</a>
+                        {% else %}
+                        <a href="{% url 'guest_checkout' %}" class="btn btn-primary w-100">Checkout
+                            Now</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+<!--------- End Cart Container ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+<!--------- Cart Scripts ---------->
+<script>
+    $(document).ready(function () {
+        function updateTotal() {
+            let total = 0;
+            $('.product-checkbox:checked').each(function () {
+                const price = parseFloat($(this).closest('.list-group-item').find('.product-price').data('price'));
+                const quantity = parseInt($(this).closest('.list-group-item').find('.update-cart').val());
+                total += price * quantity;
+            });
+            $('#total-price').text(total.toFixed(2));
+        }
+
+        function addCheckoutCart(productId, quantity) {
+            $.ajax({
+                type: 'POST',
+                url: '/checkout-product',
+                data: {
+                    product_id: productId,
+                    quantity: quantity,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                error: function () {
+                    console.error('Error occurred while updating cart');
+                }
+            });
+        }
+
+        function removeCheckoutCart(productId, quantity) {
+            $.ajax({
+                type: 'POST',
+                url: '/remove-from-checkout-cart',
+                data: {
+                    product_id: productId,
+                    quantity: quantity,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+            });
+        }
+
+        updateTotal();
+
+        $(document).on('change', '.update-cart', function () {
+            updateTotal();
+            const productId = $(this).data('product-id');
+            const quantity = $(this).val();
+        });
+
+        $(document).on('change', '.product-checkbox', function () {
+            updateTotal();
+            const productId = $(this).data('product-id');
+            const quantity = $(this).closest('.list-group-item').find('.update-cart').val();
+            const isChecked = $(this).is(':checked');
+            console.log(productId, quantity)
+            if ($(this).is(':checked')) {
+                localStorage.setItem(productId, 'checked');
+                addCheckoutCart(productId, quantity);
+            } else {
+                localStorage.removeItem(productId);
+                removeCheckoutCart(productId);
+            }
+        });
+
+        $('.product-checkbox').each(function () {
+            const productId = $(this).data('product-id');
+            const state = localStorage.getItem(productId);
+            if (state && state === 'checked') {
+                $(this).prop('checked', true);
+            } else {
+                $(this).prop('checked', false);
+            }
+        });
+
+        updateTotal();
+    });
+</script>
+<!--------- End Cart Scripts ---------->
+
+<!--------- Edit Cart Scripts ---------->
+<script>
+    $(document).on('change', '.update-cart', function (e) {
+        e.preventDefault();
+
+        var productId = $(this).data('product-id');
+        var qty = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: '/update-cart',
+            data: {
+                product_id: $(this).data('product-id'),
+                product_qty: qty,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+        });
+    });
+</script>
+<!--------- End Edit Cart Scripts ---------->
+
+<!--------- Delete Cart Item ---------->
+<script>
+    $(document).on('click', '.delete-product', function (e) {
+        e.preventDefault();
+
+        var productId = $(this).data('product-id');
+        $.ajax({
+            type: 'POST',
+            url: '/delete-cart',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                location.reload();
+            }
+        });
+    });
+</script>
+<!--------- End Delete Cart Item ---------->
+
+<!--------- Tooltip Script ---------->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Enable Tooltip
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    });
+</script>
+<!--------- End Tooltip Script ---------->
+
+{% endblock %}

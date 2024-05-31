@@ -1,0 +1,285 @@
+{% extends 'layout.html' %}
+
+{% block title %}Checkout - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<!--------- Checkout Hero ---------->
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center" data-aos="fade-up">
+            <h1 class="text-center">Place Your Orders</h1>
+        </div>
+    </div>
+</section>
+<!--------- End Checkout Hero ---------->
+
+<!--------- Checkout Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-3" data-aos="fade-up"
+            data-aos-delay="200">
+            <h4 class="text-center">Your Selected Products Will Appear Here</h4>
+            {% if request.user.is_authenticated %}
+            <p class="text-center">Kindly check your credentials. Update it to your desired information.</p>
+            {% else %}
+            <p class="text-center">Hello Guest! Kindly fill up the form before checking out.</p>
+            {% endif %}
+        </div>
+        <div class="container" data-aos="fade-up" data-aos-delay="200">
+            <a href="{% url 'cart' %}" class="btn btn-primary mb-3"><i class="bi bi-arrow-left"></i> Go Back</a>
+        </div>
+        <div class="card mb-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="container p-5">
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'checkout' %}" method="post">
+                    {% else %}
+                    <form action="{% url 'guest_checkout' %}" method="post">
+                        {% endif %}
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6 mb-">
+                                <ul class="list-group list-group-flush mb-3">
+                                    {% if request.user.is_authenticated %}
+                                    {% for item in items %}
+                                    <li class="list-group-item" data-price="{{ item.product.price }}"
+                                        data-quantity="{{ item.quantity }}">
+                                        {{ item.product.name }} x
+                                        {{ item.quantity }}
+                                        <input type="hidden" name="product{{ forloop.counter }}"
+                                            value="{{ item.product.id }}">
+                                        <input type="hidden" name="quantity{{ forloop.counter }}"
+                                            value="{{ item.quantity }}">
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    {% for product in products %}
+                                    <li class="list-group-item" data-price="{{ product.price }}"
+                                        data-quantity="{{ product.quantity }}">
+                                        {{ product.name }} x
+                                        {{ product.quantity }}
+                                        <input type="hidden" name="product{{ forloop.counter }}"
+                                            value="{{ product.id }}">
+                                        <input type="hidden" name="quantity{{ forloop.counter }}"
+                                            value="{{ product.quantity }}">
+                                    </li>
+                                    {% endfor %}
+                                    {% endif %}
+                                </ul>
+                                {% if request.user.is_authenticated %}
+                                <h3>Total:
+                                    <s>&#8369;
+                                        <span id="totalAmount">0</span>
+                                    </s>
+                                    <i class="bi bi-arrow-right-short"></i>
+                                    &#8369;
+                                    <span id="totalDiscountedAmount">0</span>
+                                </h3>
+                                <div class="container">
+                                    <p>Since you are a registered user here at Deeco Electronics,
+                                        every order amount greated than one-thousand(1000) is
+                                        discounted by 5%!</p>
+                                </div>
+                                <input type="hidden" name="amount" id="amountInput" value="0">
+                                <div class="container">
+                                    <p>You can also add your points for a much more bigger discount!</p>
+                                    <p>Your Current Points: {{ request.user.points }}</p>
+                                    <input type="number" value="0" id="user-points" min="0"
+                                        max="{{ request.user.points }}" class="form-control" name="points">
+                                </div>
+                                {% else %}
+                                <h3>Total: <span id="totalAmount">0</span></h3>
+                                <input type="hidden" name="amount" id="amountInput" value="0">
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-3">
+                                    <label for="">Name *</label>
+                                    <input type="text" class="form-control" name="name" value="{{ user.name }}"
+                                        required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Email *</label>
+                                    <input type="email" class="form-control" name="email" value="{{ user.email }}"
+                                        required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Contact No. *</label>
+                                    <input type="number" class="form-control" name="contact_no"
+                                        value="{{ user.contact_no }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Address *</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                        name="address">{{ user.address }}</textarea>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Date of Pickup *</label>
+                                    <input type="text" class="form-control mb-1" name="pickup_date" value=""
+                                        id="startDate" required>
+                                    <p>Please give us at least two (2) business days to process your order.</p>
+                                    <button class="btn btn-primary w-100">Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End Checkout Container ---------->
+
+<!--------- Delete Cart Item Script ---------->
+<script>
+    $(document).ready(function () {
+        // Init the function
+        function removeCheckoutCart(productId, quantity) {
+            $.ajax({
+                type: 'POST',
+                url: '/remove-from-checkout-cart',
+                data: {
+                    product_id: productId,
+                    quantity: quantity,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function (response) {
+                    location.reload();
+                },
+            });
+        }
+
+        // Calling the delete function here
+        $(document).on('click', '#delete-item', function () {
+            const productId = $(this).data('product-id');
+            const quantity = $(this).data('quantity');
+
+            addCheckoutCart(productId, quantity);
+        })
+    })
+</script>
+<!--------- End Delete Cart Item Script ---------->
+
+<!--------- Calc Total Order Script ---------->
+{% if request.user.is_authenticated %}
+<script>
+    function calculateTotal() {
+        var totalAmount = 0;
+        var items = document.querySelectorAll('.list-group-item');
+
+        items.forEach(function (item) {
+            var price = parseInt(item.getAttribute('data-price'));
+            var quantity = parseInt(item.getAttribute('data-quantity'));
+            totalAmount += price * quantity;
+        });
+        return totalAmount;
+    }
+
+    window.onload = function () {
+        var total = calculateTotal();
+        var amountInput = document.getElementById('amountInput');
+        var totalAmountElem = document.getElementById('totalAmount');
+        var totalDiscountedAmountElem = document.getElementById('totalDiscountedAmount');
+        var userPointsElem = document.getElementById('user-points');
+
+        if (total < 1000) {
+            totalAmountElem.textContent = total;
+            totalDiscountedAmountElem.textContent = total;
+            amountInput.value = total;
+            return;
+        }
+
+        var currentDiscountedAmount = total * 0.95;
+        totalAmountElem.textContent = total;
+        totalDiscountedAmountElem.textContent = currentDiscountedAmount.toFixed(2);
+        amountInput.value = total;
+
+        userPointsElem.addEventListener('input', function () {
+            var userPoints = parseInt(this.value);
+            const maxPoints = parseInt(this.max);
+            if (isNaN(userPoints) || userPoints < 0) {
+                userPoints = 0;
+            } else if (userPoints > maxPoints) {
+                userPoints = maxPoints;
+            }
+            userPoints = userPoints * 0.10;
+            var discountedAmount = currentDiscountedAmount - userPoints;
+            amountInput.value = Math.round(discountedAmount);
+            totalDiscountedAmountElem.textContent = Math.round(discountedAmount);
+        });
+    };
+</script>
+{% else %}
+<script>
+    function calculateTotal() {
+        var totalAmount = 0;
+        var items = document.querySelectorAll('.list-group-item');
+
+        items.forEach(function (item) {
+            var price = parseInt(item.getAttribute('data-price'));
+            console.log(price)
+            // var quantity = parseInt(item.textContent.match(/\d+/)[0]);
+            var quantity = parseInt(item.getAttribute('data-quantity'));
+            console.log(quantity);
+            totalAmount += price * quantity;
+        });
+        return totalAmount;
+    }
+
+    window.onload = function () {
+        var total = calculateTotal();
+        var amountInput = document.getElementById('amountInput');
+        document.getElementById('totalAmount').textContent = total;
+        amountInput.value = total;
+    };
+</script>
+{% endif %}
+<!--------- End Calc Total Order Script ---------->
+
+<!--------- Date Picker Script ---------->
+<script>
+    $(document).ready(function () {
+        var orderCounts = {};
+
+        // Fetch dates with orders on them
+        $.ajax({
+            url: '/get-order-counts',
+            method: 'GET',
+            success: function (data) {
+                orderCounts = data;
+                initializeDatePicker();
+            },
+            error: function () {
+                console.error('Failed to fetch order counts.');
+            }
+        });
+
+        // Function to disable the days that 30+ Orders
+        function initializeDatePicker() {
+            $('#startDate').datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: function (date) {
+                    var dateString = $.datepicker.formatDate('yy-mm-dd', date);
+                    var orderCount = orderCounts[dateString] || 0;
+
+                    var isWeekend = (date.getDay() === 0 || date.getDay() === 6);
+
+                    if (isWeekend) {
+                        return [false, "", "Weekend"];
+                    } else if (orderCount > 30) {
+                        return [false, "", "More than 30 orders"];
+                    } else {
+                        return [true, "", ""];
+                    }
+                },
+                minDate: +2
+            });
+        }
+    });
+</script>
+<!--------- End Date Picker Script ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+{% endblock %}

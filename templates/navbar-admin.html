@@ -1,0 +1,101 @@
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Admin</div>
+                <a class="nav-link" href="{% url 'dashboard' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Dashboard
+                </a>
+                <div class="sb-sidenav-menu-heading">Manage</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProducts"
+                    aria-expanded="false" aria-controls="collapseProducts">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-hammer"></i></div>
+                    Products
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseProducts" aria-labelledby="headingOne"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
+                        <a class="nav-link" href="{% url 'add_bundle' %}">Add Bundle</a>
+                        <a class="nav-link" href="{% url 'add_category' %}">Add Category</a>
+                        <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
+                        <a class="nav-link" href="{% url 'bundle_list' %}">Bundle List</a>
+                        <a class="nav-link" href="{% url 'category_list' %}">Category List</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrders"
+                    aria-expanded="false" aria-controls="collapseOrders">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    Orders
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseOrders" aria-labelledby="headingOne"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'pending_orders' %}">Pending</a>
+                        <a class="nav-link" href="{% url 'to_pack_orders' %}">To Pack</a>
+                        <a class="nav-link" href="{% url 'ready_for_pickup_orders' %}">Ready For Pickup</a>
+                        <a class="nav-link" href="{% url 'completed_orders' %}">Picked Up</a>
+                        <a class="nav-link" href="{% url 'cancelled_orders' %}">Cancelled</a>
+                    </nav>
+                </div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers"
+                    aria-expanded="false" aria-controls="collapseUsers">
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-user"></i></div>
+                    Users
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseUsers" aria-labelledby="headingOne"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'user_list' %}">User List</a>
+                        {% if request.user.user_type == 'Superadmin' %}
+                        <a class="nav-link" href="{% url 'admin_list' %}">Admin List</a>
+                        <a class="nav-link" href="{% url 'register_admin' %}">Create Admin</a>
+                        {% endif %}
+                        <a class="nav-link" href="{% url 'banned_user_list' %}">Banned Users</a>
+                    </nav>
+                </div>
+                {% if request.user.user_type == 'Superadmin' %}
+                <a class="nav-link" href="{% url 'activity_logs' %}">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-list-ul"></i></div>
+                    Activity Logs
+                </a>
+                {% endif %}
+                <div class="sb-sidenav-menu-heading">Profile</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProfile"
+                    aria-expanded="false" aria-controls="collapseProfile">
+                    <div class="sb-nav-link-icon"><i class="fa-regular fa-address-card"></i></div>
+                    Profile
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseProfile" aria-labelledby="headingOne"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'admin_edit_profile' %}">Update Profile</a>
+                        <a class="nav-link" href="{% url 'admin_change_password' %}">Change Password</a>
+                    </nav>
+                </div>
+
+                <form action="{% url 'logout' %}" method="post" id="myform">
+                    {% csrf_token %}
+                    <a href="#" onclick="document.getElementById('myform').submit()" class="nav-link">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                        Logout
+                    </a>
+                </form>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {% if request.user.user_type == 'Superadmin' %}
+            Superadmin
+            {% else %}
+            Admin
+            {% endif %}
+            {{ request.user.name }}
+        </div>
+    </nav>
+</div>

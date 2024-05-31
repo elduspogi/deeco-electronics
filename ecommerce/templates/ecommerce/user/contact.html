@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Contact Us - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<!--------- Contact Hero ---------->
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <h1 class="text-center" data-aos="fade-up">Contact Us</h1>
+        </div>
+    </div>
+</section>
+<!--------- End Contact Hero ---------->
+
+<!--------- Contact Container ---------->
+<section class="shop-container d-flex align-items-center p-5">
+    <div class="container">
+        <div class="card" data-aos="fade-up" data-aos-delay="400">
+            <div class="row">
+                <div class="col-12 col-xl-4">
+                    <img src="{% static 'assets/logo.png' %}" class="card-img img-fluid" alt="...">
+                </div>
+                <div class="col-12 col-xl-8">
+                    <div class="card-body p-5">
+                        <h2>Hello there!</h2>
+                        <p class="card-text">We are Deeco Electronics.</p>
+                        <p class="card-text">We are a growing business and we would like to hear from you.</p>
+                        <p class="card-text">Send us an email or give us a call.</p>
+
+                        <p><i class="bi bi-envelope"></i> <a href="mailto:deeco_raon@yahoo.com"
+                                class="text-white text-decoration-none">deeco_raon@yahoo.com</a>
+                        </p>
+                        <p><i class="bi bi-telephone"></i> (02) 8733 1749
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End Contact Container ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'layout.html' %}
+
+{% block title %}Shop - Deeco Electronics.{% endblock title %}
+
+{% block content %}
+
+<!--------- Push Rating Form ---------->
+{% include 'rating-form.html' %}
+<!--------- End Push Rating Form ---------->
+
+<!--------- Shop Hero ---------->
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center" data-aos="fade-up">
+            <h1 class="text-center">Shop Now Here At Deeco Electronics.</h1>
+        </div>
+    </div>
+</section>
+<!--------- End Shop Hero ---------->
+
+<!--------- Filter Sort Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="container mt-3">
+            <div class="row">
+                {% include 'messages.html' %}
+                <div class="col-md-6">
+                    <h3>Filter</h3>
+                    <select class="form-select" id="filter-select">
+                        <option data-filter="*" value="*">Select All</option>
+                        {% for category in categories %}
+                        <option data-filter="{{ category.name }}" value=".{{ category.name }}">{{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <h3>Sort</h3>
+                    <select id="sort-select" class="form-select">
+                        <option>Sort By Price</option>
+                        <option value="true">Price (Lowest To Highest)</option>
+                        <option value="false">Price (Highest To Lowest)</option>
+                    </select>
+                    <!-- <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <button class="btn btn-primary w-100" id="sort-low-to-high">Price (Lowest To
+                                Highest)</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button class="btn btn-primary w-100" id="sort-high-to-low">Price (Highest To
+                                Lowest)</button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End Filter Sort Container ---------->
+
+<!--------- Bundle Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-3">
+            <h4 class="text-center">Suggested Bundles For You</h4>
+        </div>
+
+        {% if bundles %}
+        <div class="row mb-3 justify-content-end">
+            <div class="col-lg-4">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" placeholder="Search For Bundles" aria-label="Search"
+                        id="bundle-search-input" type="text">
+                </form>
+            </div>
+        </div>
+        <div class="row mb-3 product-container" id="bundle-container">
+            {% for product in bundles %}
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3 product-card {{ product.category }}"
+                data-category="{{ product.category }}" data-price="{{ product.price }}">
+                <div class="card h-100 product-item-grid">
+                    <!-- <img src="{{ product.image1.url }}" class="card-img-top h-100" alt="..."> -->
+                    <div id="carouselExample{{ forloop.counter }}" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ product.image1.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% if product.image2 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image2.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image3 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image3.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image4 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image4.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image5 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image5.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image6 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image6.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if product.image2 %}
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExample{{ forloop.counter }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExample{{ forloop.counter }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h6>{{ product.name }}</h6>
+                        <p class="card-text">Category: {{ product.category }}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="card-text">Stocks: {{ product.stock }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="card-text">Price: &#8369;{{ product.price }}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="container mb-3">
+                        <a href="{% url 'product' product_id=product.id %}" class="btn btn-primary w-100">View
+                            Bundle <i class="bi bi-eye"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center mb-5">There are no bundles yet. Please wait for
+            exciting bundle offers.</p>
+        {% endif %}
+    </div>
+</section>
+<!--------- End Bundle Container ---------->
+
+<!--------- Product Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-3">
+            <h4 class="text-center">Find Amazing Products Here</h4>
+        </div>
+
+        {% if products %}
+        <div class="row mb-3 justify-content-end">
+            <div class="col-lg-4">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" placeholder="Search For Products" aria-label="Search"
+                        id="product-search-input" type="text">
+                </form>
+            </div>
+        </div>
+        <div class="row mb-3 product-container" id="product-container">
+            {% for product in products %}
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3 product-card {{ product.category }}"
+                data-category="{{ product.category }}" data-price="{{ product.price }}">
+                <div class="card h-100 product-item-grid">
+                    <div id="carouselExample{{ forloop.counter}}1" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ product.image1.url }}" class="d-block w-100 rounded img-fluid" alt="...">
+                            </div>
+                            {% if product.image2 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image2.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image3 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image3.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image4 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image4.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image5 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image5.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                            {% if product.image6 %}
+                            <div class="carousel-item">
+                                <img src="{{ product.image6.url }}" class="d-block w-100 rounded" alt="...">
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if product.image2 %}
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExample{{ forloop.counter}}1" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExample{{ forloop.counter}}1" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h6>{{ product.name }}</h6>
+                        <p class="card-text">Category: {{ product.category }}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="card-text">Stocks: {{ product.stock }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="card-text">Price: &#8369;{{ product.price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mb-3">
+                        <a href="{% url 'product' product_id=product.id %}" class="btn btn-primary w-100">View
+                            Product <i class="bi bi-eye"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-center mb-5">There are no products yet. Please wait for
+            the products to be available.</p>
+        {% endif %}
+    </div>
+</section>
+<!--------- End Product Container ---------->
+
+<!--------- Shop Scripts ---------->
+<script>
+    $(document).ready(function () {
+        var price = parseInt($('.product-card').data('price'));
+
+        var $grid = $('.product-container').isotope({
+            itemSelector: '.product-card',
+            layoutMode: 'fitRows'
+        });
+
+        $('#filter-select').change(function () {
+            var filterValue = $(this).val();
+            if (filterValue === '*') {
+                $('#product-search-input').css('display', 'block');
+                $('#bundle-search-input').css('display', 'block');
+                $grid.isotope({ filter: filterValue });
+            } else {
+                $('#product-search-input').css('display', 'none');
+                $('#bundle-search-input').css('display', 'none');
+                $grid.isotope({ filter: filterValue });
+            }
+        });
+
+        $('#sort-select').change(function () {
+            var filterValue = $(this).val();
+            if (filterValue === 'true') {
+                filterValue = true;
+            } else {
+                filterValue = false;
+            }
+            $grid.isotope({ sortBy: 'price', sortAscending: filterValue });
+        });
+
+        $('#product-search-input').on('input', function () {
+            event.preventDefault();
+            const productName = $('#product-search-input').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/search-products',
+                data: {
+                    'product_name': productName
+                },
+                success: function (data) {
+                    $('#product-container').html(data);
+                }
+            });
+        });
+
+        $('#bundle-search-input').on('input', function () {
+            event.preventDefault();
+            const productName = $('#bundle-search-input').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/search-bundles',
+                data: {
+                    'product_name': productName
+                },
+                success: function (data) {
+                    $('#bundle-container').html(data);
+                }
+            });
+        });
+    });
+</script>
+<!--------- End Shop Scripts ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+{% endblock %}

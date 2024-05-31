@@ -1,0 +1,97 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Edit Order {{ order.id }} - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-4">Edit Order</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can are currenty editing order {{ order.id }}.</li>
+    </ol>
+</div>
+
+{% include 'messages.html' %}
+
+<div class="container mb-3">
+    {% if order.status == 'Pending' %}
+    <a href="{% url 'pending_orders' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long"></i> Go Back</a>
+    {% elif order.status == 'To Pack' %}
+    <a href="{% url 'to_pack_orders' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long"></i> Go Back</a>
+    {% elif order.status == 'Ready For Pick Up' %}
+    <a href="{% url 'ready_for_pickup_orders' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long"></i> Go
+        Back</a>
+    {% elif order.status == 'Picked Up' %}
+    <a href="{% url 'completed_orders' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long"></i> Go
+        Back</a>
+    {% elif order.status == 'Cancelled' %}
+    <a href="{% url 'cancelled_orders' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long"></i> Go
+        Back</a>
+    {% endif %}
+</div>
+
+<div class="container">
+    <div class="card px-5">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="">Order ID:</label>
+                        <input type="text" class="form-control" value="{{ order.id }}" disabled>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Placed On:</label>
+                        <input type="text" class="form-control" value="{{ order.order_date }}" disabled>
+                    </div>
+                    {% if order.user %}
+                    <div class="form-group mb-3">
+                        <label for="">User ID:</label>
+                        <input type="text" class="form-control" value="{{ order.user.id }}" disabled>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Username:</label>
+                        <input type="text" class="form-control" value="{{ order.user.name }}" disabled>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="">Name:</label>
+                        <input type="text" class="form-control" value="{{ order.name }}" disabled>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Email Address:</label>
+                        <input type="text" class="form-control" value="{{ order.email }}" disabled>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Amount:</label>
+                        <input type="text" class="form-control" value="&#8369;{{ order.amount }}" disabled>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Pickup Date:</label>
+                        <input type="text" class="form-control" value="{{ order.pickup_date }}" disabled>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <form action="{% url 'edit_order' order_id=order.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="">Status *</label>
+                            <select class="form-select" aria-label="Default select example" name="status">
+                                {% for choice in choices %}
+                                {% if order.status == choice %}
+                                <option value="{{ choice }}" selected>{{ choice }}</option>
+                                {% else %}
+                                <option value="{{ choice }}">{{ choice }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">EDIT ORDER STATUS</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

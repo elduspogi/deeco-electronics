@@ -1,0 +1,150 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ bundle.name }} - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <h1 class="text-center">Add To Cart This Now!</h1>
+        </div>
+    </div>
+</section>
+
+
+<section class="shop-container d-flex align-items-center justify-content-center pt-5">
+    <div class="container">
+        <div class="container">
+            <a href="{% url 'shop' %}" class="btn btn-primary mb-3">Go Back</a>
+        </div>
+
+        <div class="card mb-5">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div id="carouselExample" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{ bundle.image1.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% if bundle.image2 %}
+                                <div class="carousel-item">
+                                    <img src="{{ bundle.image2.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% endif %}
+                                {% if bundle.image3 %}
+                                <div class="carousel-item">
+                                    <img src="{{ bundle.image3.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% endif %}
+                                {% if bundle.image4 %}
+                                <div class="carousel-item">
+                                    <img src="{{ bundle.image4.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% endif %}
+                                {% if bundle.image5 %}
+                                <div class="carousel-item">
+                                    <img src="{{ bundle.image5.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% endif %}
+                                {% if bundle.image6 %}
+                                <div class="carousel-item">
+                                    <img src="{{ bundle.image6.url }}" class="d-block w-100 rounded" alt="...">
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% if bundle.image2 %}
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="container">
+                            <h1>{{ bundle.name }}</h1>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p>{{ bundle.description }}</p>
+                                    <p>Category: {{ bundle.category }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Stocks: {{ bundle.stock }}</p>
+                                    <p>Price: &#8369;{{ bundle.price }}</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <p>Inclusions:</p>
+                                <div class="col-md-6 col-12">
+                                    <p>{{ bundle.product1.name }} x {{ bundle.product1_quantity }}</p>
+                                    <p>{{ bundle.product2.name }} x {{ bundle.product2_quantity }}</p>
+                                    <p>{{ bundle.product3.name }} x {{ bundle.product3_quantity }}</p>
+                                </div>
+                                {% if bundle.product4 %}
+                                <div class="col-md-6">
+                                    <p>{{ bundle.product4.name }} x {{ bundle.product4_quantity }}</p>
+                                    <p>{{ bundle.product5.name }} x {{ bundle.product5_quantity }}</p>
+                                    <p>{{ bundle.product6.name }} x {{ bundle.product6_quantity }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Quantity</span>
+                                        <input type="number" class="form-control" placeholder="" aria-label="Username"
+                                            aria-describedby="basic-addon1" name="bundle_qty" value="1" min="1"
+                                            max="{{ bundle.stock }}" id="qty-cart">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary w-100" value="{{ bundle.id }}" id="add-cart">Add To
+                                        Cart</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    $(document).on('click', '#add-cart', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            // url: '{% url 'add_to_cart' %}',
+            url: '/add-to-cart',
+            data: {
+                bundle_id: $('#add-cart').val(),
+                bundle_qty: $('#qty-cart').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+
+            success: function (json) {
+                document.getElementById('cart_quantity').textContent = json.qty;
+            },
+
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Product List - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Product List</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view your products here.</li>
+    </ol>
+</div>
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if products %}
+            <div class="table-responsive">
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Stocks</th>
+                            <th class="col">Edit</th>
+                            <th class="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <th scope="row">{{ product.id }}</th>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.stock }}</td>
+                            <td>
+                                <a href="{% url 'edit_product' product_id=product.id %}" class="text-dark">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_product' product_id=product.id %}" class="text-dark">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class=" text-center p-5">No products found. Create one <a href="{% url 'add_product' %}"
+                    class="text-white">here.</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock content %}

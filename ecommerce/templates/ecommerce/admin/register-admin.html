@@ -1,0 +1,49 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Create Admin - Deeco Electronics.{% endblock %}
+
+{% block content %}
+{% include 'messages.html' %}
+<div class="container">
+    <h1 class="mt-4">Create Admin</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can create administrators here.</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            <div class="container">
+                <form action="{% url 'register_admin' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Complete Name *</label>
+                                <input type="text" class="form-control" placeholder="Complete Name" name="name">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Email Address *</label>
+                                <input type="email" class="form-control" placeholder="Email Address" name="email">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="">Password *</label>
+                                <input type="password" class="form-control" placeholder="Password" name="password">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Confirm Password*</label>
+                                <input type="password" class="form-control" placeholder="Confirm Password"
+                                    name="confirm_password">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">CREATE ADMIN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

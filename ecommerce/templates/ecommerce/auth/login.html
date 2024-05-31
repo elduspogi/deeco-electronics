@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login - Deeco Electronics.{% endblock title %}
+
+{% block content %}
+<!--------- Login Container ---------->
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <!-- <div class="card"> -->
+    <!-- <div class="card-body"> -->
+    <div class="login-container container">
+        <div class="">
+            <h1 class="text-center">Welcome to Deeco Electronics.</h1>
+        </div>
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% if form.errors %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Incorrect Email Address and/or Password.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control {% if form.errors %}error{% endif %}" name="email"
+                            value="">
+                        <label for="floatingInput">Email Address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control {% if form.errors %}error{% endif %}" id="password"
+                            name="password">
+                        <label for="Password">Password</label>
+                        <span class="text-danger">
+                        </span>
+                        <span class="password-toggle-btn" onclick="togglePasswordVisibility()"><i
+                                class="bi bi-eye-slash"></i></span>
+                    </div>
+                    <p class="text-end">
+                        <a href="{% url 'forgot_password' %}" class="text-decoration-none text-white">Forgot
+                            Password?</a>
+                    </p>
+                    {% include 'messages.html' %}
+                </div>
+                <div class="col-md-12 mb-3">
+                    {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary w-100">LOGIN</button>
+                </div>
+                <div class="col-md-12 text-center">
+                    Don't have an account? <a href="{% url 'register' %}"
+                        class="text-white text-decoration-none"><strong>Click here.</strong></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- </div> -->
+    <!-- </div> -->
+</div>
+<!--------- End Login Container ---------->
+
+<!--------- Show Password Toggle Style ---------->
+<style>
+    .password-toggle-container {
+        position: relative;
+    }
+
+    .password-toggle-btn {
+        font-size: 13px;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+</style>
+<!--------- End Show Password Toggle Style ---------->
+
+<!--------- Show Password Toggle Script ---------->
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var passwordToggleBtn = document.querySelector(".password-toggle-btn");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye"></i>';
+        } else {
+            passwordInput.type = "password";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        }
+    }
+</script>
+<!--------- End Show Password Toggle Script ---------->
+
+{% endblock %}

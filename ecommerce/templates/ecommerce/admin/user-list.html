@@ -1,0 +1,62 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}User List - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-4">User List</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view registered users here.</li>
+    </ol>
+</div>
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if users %}
+            <div class="table-responsive">
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Contact No.</th>
+                            <th class="col">Address</th>
+                            <th class="col">Ban</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <th>{{ user.id }}</th>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.contact_no }}</td>
+                            <td>{{ user.address }}</td>
+                            <td>
+                                <a href="{% url 'ban_user' user_id=user.id %}" class="text-dark">
+                                    Ban User
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="p-4 text-center">No registered users.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock content %}

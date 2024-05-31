@@ -1,0 +1,210 @@
+{% extends 'layout.html' %}
+
+{% block title %}Register - Deeco Electronics.{% endblock title %}
+
+{% block content %}
+<!--------- Register Container ---------->
+<div class="container d-flex justify-content-center align-items-center register-container p-5">
+    <!-- <div class="card">
+        <div class="card-body"> -->
+    <div class="register-container-inner container">
+        <div>
+            <h1 class="text-center">Register at Deeco Electronics.</h1>
+        </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+
+                    <input type="hidden" name="user_type" value="User">
+                    {% if form.errors.email %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Email Address is required.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control {% if form.errors.email %}error{% endif %}"
+                            placeholder="" name="email" value="{{ form.cleaned_data.email }}">
+                        <label for="floatingInput">Email Address</label>
+                    </div>
+                    {% if form.errors.name %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Complete Name is required.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="hidden" name="user_type" value="user">
+                        <input type="text" class="form-control {% if form.errors.name %}error{% endif %}" placeholder=""
+                            name="name" value="{{ form.cleaned_data.name }}">
+                        <label for="floatingInput">Complete Name</label>
+                        <span class="text-danger text-error">
+                        </span>
+                    </div>
+                    {% if form.errors.contact_no %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Invalid Contact No.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control {% if form.errors.contact_no %}error{% endif %}"
+                            placeholder="" name="contact_no" id="contact_no" maxlength="11"
+                            oninput="validateContactNo()" value="{{ form.cleaned_data.contact_no }}">
+                        <label for="floatingInput">Contact No.</label>
+                        <span class="text-danger text-error">
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    {% if form.errors.address %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Complete Address is required.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control {% if form.errors.address %}error{% endif %}"
+                            placeholder="" name="address" value="{{ form.cleaned_data.address }}">
+                        <label for="floatingInput">Complete Address</label>
+                        <span class="text-danger text-error">
+                        </span>
+                    </div>
+                    {% if form.errors.password %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Passwords must have at least 8 characters, 1 number, 1 capital letter, and 1 special character.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control {% if form.errors.password %}error{% endif %}"
+                            id="password" placeholder="" name="password">
+                        <label for="Password">Password</label>
+                        <span class="text-danger text-error">
+                        </span>
+                        <span class="password-toggle-btn" onclick="togglePasswordVisibility()"><i
+                                class="bi bi-eye-slash"></i></span>
+                    </div>
+                    {% if form.errors.confirm_password %}
+                    <span class="text-danger text-error">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        Passwords must have at least 8 characters, 1 number, 1 capital letter, and 1 special character.
+                    </span>
+                    {% endif %}
+                    <div class="form-floating mb-3">
+                        <input type="password"
+                            class="form-control {% if form.errors.confirm_password %}error{% endif %}"
+                            id="confirm-password" placeholder="" name="confirm_password">
+                        <label for="floatingPassword">Confirm Password</label>
+                        <span class="text-danger text-error">
+                        </span>
+                        <span class="confirm-password-toggle-btn" onclick="toggleConfirmPasswordVisibility()"><i
+                                class="bi bi-eye-slash"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <p class="text-center">By signing up, you agree to the
+                        <strong>
+                            <a class="text-primary text-decoration-none" href="{% url 'terms_of_service' %}"
+                                target="_blank">Terms of Service</a>
+                        </strong>
+                        and
+                        <strong>
+                            <a class="text-primary text-decoration-none" href="{% url 'privacy_policy' %}"
+                                target="_blank">Privacy
+                                Policy</a>
+                        </strong>
+                        of Deeco Electronics.
+                    </p>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn btn-primary w-100">REGISTER</button>
+                </div>
+                <div class="col-md-12 text-center">
+                    Already have an account? <a href="{% url 'login' %}"
+                        class="text-white text-decoration-none"><strong>Click here.</strong></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- </div>
+</div> -->
+</div>
+<!--------- Register Container ---------->
+
+<!--------- Show Password Toggle Style ---------->
+<style>
+    .password-toggle-container {
+        position: relative;
+    }
+
+    .password-toggle-btn {
+        font-size: 13px;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    .confirm-password-toggle-btn {
+        font-size: 13px;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+</style>
+<!--------- End Show Password Toggle Style ---------->
+
+<!--------- Show Password Toggle Script ---------->
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var passwordToggleBtn = document.querySelector(".password-toggle-btn");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye"></i>';
+        } else {
+            passwordInput.type = "password";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        }
+    }
+
+    function toggleConfirmPasswordVisibility() {
+        var passwordInput = document.getElementById("confirm-password");
+        var passwordToggleBtn = document.querySelector(".confirm-password-toggle-btn");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye"></i>'
+        } else {
+            passwordInput.type = "password";
+            passwordToggleBtn.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        }
+    }
+</script>
+<!--------- End Show Password Toggle Script ---------->
+
+<!--------- Contact No Script ---------->
+<script>
+    function validateContactNo() {
+        const contactNoInput = document.getElementById('contact_no');
+        const errorSpan = document.getElementById('contact_no_error');
+
+        contactNoInput.value = contactNoInput.value.replace(/\D/g, '');
+
+        if (contactNoInput.value.length > 11) {
+            contactNoInput.value = contactNoInput.value.slice(0, 11);
+        }
+    }
+</script>
+<!--------- End Contact No Script ---------->
+
+{% endblock %}

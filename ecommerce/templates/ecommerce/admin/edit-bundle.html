@@ -1,0 +1,167 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Edit Bundle - Deeco Electronics.{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-4">Edit Bundle</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can edit bundles here.</li>
+        <li class="breadcrumb-item active">Currently editing bundle {{ bundle.id }}.</li>
+    </ol>
+</div>
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="container">
+                <form action="{% url 'edit_bundle' bundle_id=bundle.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="">Name *</label>
+                            <input type="text" class="form-control" name="name" value="{{ bundle.name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" id="exampleFormControlTextarea1"
+                                rows="3">{{ bundle.description }}</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Price *</label>
+                            <input type="number" class="form-control" placeholder="e.g. 100.00" name="price"
+                                value="{{ bundle.price }}" min="1">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="">Stock *</label>
+                            <input type="number" class="form-control" placeholder="e.g. 5" name="stock"
+                                value="{{ bundle.stock }}" min="1">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="category-select">Select a Category *</label>
+                            <select id="category-select" class="form-select mb-3" aria-label="Select a Category"
+                                name="category">
+                                <option selected disabled>Select a Category</option>
+                                {% for category in categories %}
+                                {% if bundle.category.id %}
+                                <option value="{{ category.id }}" selected>{{ category.name}}</option>
+                                {% else %}
+                                <option value="{{ category.id }}">{{ category.name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div id="carouselExample" class="carousel slide">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="{{ bundle.image1.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 1</label>
+                                        </div>
+                                        {% if bundle.image2 %}
+                                        <div class="carousel-item">
+                                            <img src="{{ bundle.image2.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 2</label>
+                                        </div>
+                                        {% endif %}
+                                        {% if bundle.image3 %}
+                                        <div class="carousel-item">
+                                            <img src="{{ bundle.image3.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 3</label>
+                                        </div>
+                                        {% endif %}
+                                        {% if bundle.image4 %}
+                                        <div class="carousel-item">
+                                            <img src="{{ bundle.image4.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 4</label>
+                                        </div>
+                                        {% endif %}
+                                        {% if bundle.image5 %}
+                                        <div class="carousel-item">
+                                            <img src="{{ bundle.image5.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 5</label>
+                                        </div>
+                                        {% endif %}
+                                        {% if bundle.image6 %}
+                                        <div class="carousel-item">
+                                            <img src="{{ bundle.image6.url }}" class="d-block w-100 rounded" alt="...">
+                                            <label for="">Image 6</label>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% if bundle.image2 %}
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExample" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExample" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="">Image 1 *</label>
+                                    <input type="file" class="form-control" name="image1">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Image 2</label>
+                                    <input type="file" class="form-control" name="image2">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Image 3</label>
+                                    <input type="file" class="form-control" name="image3">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Image 4</label>
+                                    <input type="file" class="form-control" name="image4">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Image 5</label>
+                                    <input type="file" class="form-control" name="image5">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Image 6</label>
+                                    <input type="file" class="form-control" name="image6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">EDIT PRODUCT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to update the image preview with the current image
+    function updateImagePreview() {
+        var preview = document.getElementById('image-preview');
+        var currentImageSrc = preview.getAttribute('src');
+        var inputElement = document.getElementById('image-input');
+        var file = inputElement.files[0];
+
+        // If no file is selected, keep the current image preview
+        if (!file) {
+            preview.src = currentImageSrc;
+        }
+    }
+
+    // Call the updateImagePreview function when the page loads
+    window.addEventListener('load', function () {
+        updateImagePreview();
+    });
+</script>
+{% endblock %}

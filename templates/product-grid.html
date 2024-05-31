@@ -1,0 +1,22 @@
+<div class="container mt-5">
+    {% if latest_products %}
+    <div class="row">
+        {% for product in latest_products %}
+        <div class="col-lg-4 col-md-6 col-12 mb-3 product-item" data-aos="zoom-in" data-aos-delay="400">
+            <a href="{% url 'product' product_id=product.id %}" class="text-white text-decoration-none">
+                <div class="card h-100 product-item-grid">
+                    <img src="{{ product.image1.url }}" class="card-img-top img-fluid h-100" alt="...">
+                    <div class="card-body">
+                        <h6>{{ product.name }}</h6>
+                        <!-- <p class="card-text h6">{{ product.description }}</p> -->
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center" data-aos="fade-up" data-aos-delay="200">There are no products yet. Please wait for the
+        products to be available.</p>
+    {% endif %}
+</div>

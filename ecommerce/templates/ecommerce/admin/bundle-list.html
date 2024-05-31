@@ -1,0 +1,66 @@
+{% extends 'layout-admin.html' %}
+
+{% block title %}Bundle List - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Bundle List</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">You can view your bundled products here.</li>
+    </ol>
+</div>
+
+{% include 'messages.html' %}
+
+<div class="container">
+    <div class="card mb-3 card-dashboard">
+        <div class="card-body">
+            {% if bundles %}
+            <div class="table-responsive">
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Stocks</th>
+                            <th class="col">Edit</th>
+                            <th class="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bundle in bundles %}
+                        <tr>
+                            <th>{{ bundle.id }}</th>
+                            <td>{{ bundle.name }}</td>
+                            <td>{{ bundle.price }}</td>
+                            <td>{{ bundle.stock }}</td>
+                            <td>
+                                <a href="{% url 'edit_bundle' bundle_id=bundle.id %}" class="text-dark">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_product' product_id=bundle.id %}" class="text-dark">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center p-4">No bundles found. Create one <a href="{% url 'add_bundle' %}"
+                    class="text-white">here.</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock content %}

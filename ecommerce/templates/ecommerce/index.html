@@ -1,0 +1,186 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Home - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<!--------- Hero ---------->
+<header class="masthead  d-flex align-items-center justify-content-center">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="index row gx-4 gx-lg-5 h-100">
+            <div class="col-lg-8 align-self-end">
+                <style>
+                    #text-to-type {
+                        min-height: 68px;
+                    }
+
+                    @media (max-width: 575.98px) {
+                        .index {
+                            justify-content: center !important;
+                            align-items: center !important;
+                            text-align: center !important;
+                        }
+                    }
+                </style>
+                <h1 class="text-white font-weight-bold text-typing" data-aos="fade-up" id="text-to-type"></h1>
+            </div>
+            <div class="col-lg-8 align-self-baseline">
+                <p class="text-white-75 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    Your One Stop Shop For Electronic Needs.</p>
+                <a class="btn btn-primary btn-xl" href="{% url 'shop' %}" data-aos="fade-up" data-aos-delay="400"
+                    id="index-button">
+                    Shop Now <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<!--------- End Hero ---------->
+
+<!--------- About ---------->
+<section id="about" class="page-section ">
+    <div class="container">
+        <header class="section-header" data-aos="fade-up">
+            <h1 class="text-center">Know More About Deeco Electronics.</h1>
+            <p class="text-center">About Us</p>
+        </header>
+        <div class="row align-items-center mb-3">
+            <div class="col-lg-6 mb-3" data-aos="zoom-in" data-aos-delay="0">
+                <img src="{% static 'assets/deeco.png' %}" class="img-fluid mx-auto d-block" alt>
+            </div>
+            <!-- Tab Pills -->
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                <h1>Your One Stop Shop For Electronic Needs.</h1>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                            aria-selected="true">Mission</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                            type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Services</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                            type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                            Why Buy From Us?
+                        </button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active p-2" id="nav-home" role="tabpanel"
+                        aria-labelledby="nav-home-tab" tabindex="0">
+                        Our mission is to empower innovation by providing high-quality electronic hardware
+                        parts to engineers, hobbyists, and businesses worldwide. We strive to be the trusted source
+                        for
+                        reliable components, exceptional customer service, and technical expertise, enabling our
+                        customers to bring their technological visions to life.
+                    </div>
+                    <div class="tab-pane fade p-2" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+                        tabindex="0">
+                        Deeco Electronics is dedicated to offering a comprehensive range of services to meet the diverse
+                        needs of our customers. From a vast product selection to expert technical support, we aim to be
+                        your go-to source for electronic hardware parts. Discover the various services we provide to
+                        support your projects and business operations.
+                        <ol>
+                            <li>
+                                <strong>Wide Range of Products: </strong>
+                                We offer an extensive selection of electronic
+                                components sourced from reputable manufacturers.
+                            </li>
+                            <li>
+                                <strong>Technical Support: </strong>
+                                Our team of experienced technicians is available to
+                                provide expert advice and technical support to help you find the right components and
+                                troubleshoot any issues.
+                            </li>
+                            <li>
+                                <strong>Bulk Purchasing: </strong>
+                                We offer competitive pricing and discounts for bulk
+                                purchases, catering to the needs of businesses and large-scale projects.
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="tab-pane fade p-2" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"
+                        tabindex="0">
+                        Choosing the right supplier for electronic components is crucial to the success of your
+                        projects. At Deeco Electronics, we stand out for our quality assurance, competitive pricing, and
+                        exceptional customer service. Find out why so many customers trust us for their electronic
+                        hardware needs and why you should too.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End About ---------->
+
+<!--------- Latest Products ---------->
+<section class="page-section" id="latest_products">
+    <div>
+        <h1 class="text-white text-center" data-aos="fade-up">Our Latest Products</h1>
+    </div>
+    <div class="container">
+        <!--------- Push Product Grid ---------->
+        {% include 'product-grid.html' %}
+        <!--------- End Push Product Grid ---------->
+    </div>
+</section>
+<!--------- End Latest Products ---------->
+
+<!--------- Latest Bundles ---------->
+<section class="page-section" id="latest_bundles">
+    <div>
+        <h1 class="text-white text-center" data-aos="fade-up">Latest Bundles Made For You</h1>
+    </div>
+    <div class="container">
+        <!--------- Push Bundle Grid ---------->
+        {% include 'bundle-grid.html' %}
+        <!--------- End Push Bundle Grid ---------->
+    </div>
+</section>
+<!--------- End Latest Bundles ---------->
+
+<!--------- Testimonials ---------->
+<section class="page-section" id="reviews">
+    <div class="container">
+        <h1 class="text-white text-center" data-aos="fade-up">Customer Reviews</h1>
+        <p class="text-white text-center" data-aos="fade-up" data-aos-delay="200">
+            What they are saying about the experience
+        </p>
+    </div>
+    <div class="container">
+        <!--------- Push Review Grid ---------->
+        {% include 'review-grid.html' %}
+        <!--------- End Push Review Grid ---------->
+    </div>
+</section>
+<!--------- End Testimonials ---------->
+
+<!--------- FAQs ---------->
+{% include 'faqs.html' %}
+<!--------- End FAQs ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+<!--------- Typed JS Script ---------->
+<script>
+    var typed = new Typed('#text-to-type', {
+        strings: ['Electronic Products?', 'We got you covered!', 'Deeco Electronics.'],
+        typeSpeed: 30,
+        backSpeed: 30,
+        backDelay: 500,
+        startDelay: 1000,
+        loop: false,
+        showCursor: false,
+        smartBackspace: true,
+        onStringTyped: function (arrayPos, self) {
+            var textHeight = document.getElementById('text-to-type').offsetHeight;
+            var minHeight = parseFloat(window.getComputedStyle(document.getElementById('text-to-type')).minHeight);
+            if (textHeight < minHeight) {
+                document.getElementById('text-to-type').style.height = minHeight + 'px';
+            }
+        }
+    });
+</script>
+<!--------- End Types JS Script ---------->
+
+{% endblock %}

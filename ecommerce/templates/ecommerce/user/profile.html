@@ -1,0 +1,151 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ request.user.name }} - Deeco Electronics.{% endblock %}
+
+{% block content %}
+<!--------- Profile Hero ---------->
+<section class="shop d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center" data-aos="fade-up">
+            <h1 class="text-center">Hello, {{ request.user.name }}!</h1>
+        </div>
+    </div>
+</section>
+<!--------- End Profile Hero ---------->
+
+<!--------- Profile Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-3">
+            <h4 class="text-center" data-aos="fade-up" data-aos-delay="100">This is your profile section.</h4>
+            <p data-aos="fade-up" data-aos-delay="200">You can view and edit your profile here.</p>
+        </div>
+
+        <!--------- Push Messages ---------->
+        {% include 'messages.html' %}
+        <!--------- End Push Messages ---------->
+
+        <div class="card mb-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="card-body">
+                <div class="container p-3">
+                    <form action="{% url 'profile' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="">Complete Name *</label>
+                                    <input type="text" class="form-control" name="name" value="{{ request.user.name }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Email Address *</label>
+                                    <input type="text" class="form-control" name="email"
+                                        value="{{ request.user.email }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="">Contact No. *</label>
+                                    <input type="text" class="form-control" name="contact_no"
+                                        value="{{ request.user.contact_no }}">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="">Address *</label>
+                                    <input type="text" class="form-control" name="address"
+                                        value="{{ request.user.address }}">
+                                </div>
+                            </div>
+                            <div class="container mt-3">
+                                <button class="btn btn-primary mb-3 w-100" type="submit">Update Profile</button>
+                                <a href="{% url 'user_change_password' %}" class="btn btn-primary w-100">Change
+                                    Password?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End Profile Container ---------->
+
+<!--------- Order Container ---------->
+<section class="shop-container d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5 mb-3">
+            <h4 class="text-center" data-aos="fade-up" data-aos-delay="100">This is your orders section.</h4>
+            <p data-aos="fade-up" data-aos-delay="200">You can view your orders here.</p>
+        </div>
+
+        <div class="card mb-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="card-body">
+                <div class="container p-3">
+                    {% if order_data %}
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table id="myTable" class="display">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Placed At</th>
+                                        <th>Pickup Date</th>
+                                        <th>Amount</th>
+                                        <th>Products</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order_entry in order_data %}
+                                    <tr>
+                                        <th>{{ order_entry.order.id }}</th>
+                                        <td>{{ order_entry.order.order_date }}</td>
+                                        <td>{{ order_entry.order.pickup_date}}</td>
+                                        <td>{{ order_entry.order.amount}}</td>
+                                        <td>
+                                            <ul>
+                                                {% for order_item in order_entry.order_items %}
+                                                <li>{{ order_item.product.name }} x {{ order_item.quantity }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td>{{ order_entry.order.status }}</td>
+                                        {% if order_entry.order.status == 'Pending' %}
+                                        <td>
+                                            <form action="{% url 'soft_delete_order' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="order" value="{{ order_entry.order.id }}">
+                                                <button class="btn btn-danger w-100" type="submit">CANCEL</button>
+                                            </form>
+                                        </td>
+                                        {% else %}
+                                        <td></td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-center">You have no current orders.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--------- End Order Container ---------->
+
+<!--------- DataTable Script ---------->
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+<!--------- End DataTable Script ---------->
+
+<!--------- Footer ---------->
+{% include 'footer.html' %}
+<!--------- End Footer ---------->
+
+{% endblock %}

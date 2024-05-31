@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/">Deeco Electronics.</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+            aria-label="Toggle navigation" id="navbar-toggler">
+            <span class="navbar-toggler-icon" id="navbar-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#about">About</a></li>
+                {% if request.path == '/contact-us' %}
+                <li class="nav-item"><a class="nav-link active" href="{% url 'contact' %}">Contact</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                {% endif %}
+                {% if request.path == '/shop' %}
+                <li class="nav-item"><a class="nav-link active" href="{% url 'shop' %}">Shop</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'shop' %}">Shop</a></li>
+                {% endif %}
+                {% if request.path == '/cart' %}
+                <li class="nav-item"><a class="nav-link active" href="{% url 'cart' %}">
+                        {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}">
+                        {% endif %}
+                        Cart
+                        (<span id="cart_quantity">{{ cart|length }}</span>)
+                    </a>
+                </li>
+
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    {% if request.path == '/profile' %}
+                    <a href="{% url 'profile' %}" class="nav-link active">Profile</a>
+                    {% else %}
+                    <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" method="post" id="myform">
+                        {% csrf_token %}
+                        <a href="#" onclick="document.getElementById('myform').submit()" class="nav-link">Logout</a>
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
